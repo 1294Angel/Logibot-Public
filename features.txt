@@ -1,0 +1,121 @@
+LOGIBOT FEATURE LIST
+
+OVERVIEW
+LogiBot is a Discord bot that organises lifts to and from events, and tracks who is going to socials. It works from forum posts, buttons and private messages, and is designed so it can run on more than one Discord server.
+
+SETUP AND ADMIN
+- /initialise creates the category, the events forum, the socials forum and a private officers channel. It is safe to run again.
+- /setup lets the server admin choose up to three officer roles, rename the category and forums, and turn area matching on or off.
+- Each forum gets a pinned "Start here" post explaining how it works.
+- The bot checks it has the permissions it needs and says which are missing.
+- Officers are people with an officer role or the Manage Server permission.
+- /config show lists where everything is and who the officers are.
+- /config rename renames the category, either forum or the officers channel.
+- /config move moves a forum or the officers channel to another category or changes its position. The officers channel stays private.
+- /config link points the bot at a channel that already exists instead of making its own.
+- /config officer_add and /config officer_remove change which roles are officers, and the private officers channel is updated to match.
+- /config guide posts or refreshes the pinned officer guide in the officers channel.
+- /config addresses chooses whether pickup addresses show in the cars post or are sent only by DM to each car's members.
+- /status (admins) shows uptime, version, when the scheduler last ran, open conversations, counts, database size and any missing permissions.
+- /config area_matching turns grouping by pickup area on or off.
+- The bot tracks its channels by ID, so renaming or moving them in Discord directly is also safe.
+
+RE-OCCURRING EVENTS (SERIES)
+- A third type besides events and socials, for things like weekly combat training. Each series has its own forum.
+- When an officer creates one for the first time, the bot makes the series' forum hidden (officers and the creator only) with a private draft post, and pings the creator there.
+- The creator adds whatever every post should carry - statements, rules, images, polls - in the draft thread, then presses Finished (in the draft or in a private message from the bot).
+- The bot saves all of it as a preset, opens the forum to everyone, pins a guide post, and straight away messages the creator to post the first one so people can sign up.
+- Each series can be sign-ups like a social (Going plus custom questions) or lift sign-ups like an event. This is chosen per series.
+- Later, officers post a new one with /event recurring, typing to search a list of presets, or by choosing Re-occurring in /event create. They pick the date from a list of the series' upcoming dates, and the bot copies the saved template (including recreated polls) into the new post.
+- The private draft for a new series, or for a template edit, is deleted automatically if it is not finished within 48 hours (configurable). The creator is told by private message, and a saved template is never lost by an expired edit.
+- On every restart the bot checks each series and repairs problems: a deleted or still-hidden forum, a missing pinned guide post, an unfinished draft that lost its private post, an edit that lost its draft, and a series that never posted anything (scheduled ones are switched to automatic posting, unscheduled ones get a message asking the creator to post the first one).
+- Everything in a series' template is stored in the database: text, embeds, polls (with their options, single or multiple choice and how long they run) and attached files. /preset show lists exactly what is saved so you can check it.
+- /preset edit changes a series later: its name, what posts offer, location, usual day and time, and extra questions (every answer has a Keep button), and optionally its saved template. Editing the template opens a hidden private copy pre-filled with the current statements and polls; delete or add messages and press Finished. Posts already made are never changed, and the live forum stays open throughout.
+- Each series has its own repeat schedule, chosen from a dropdown: every week (on a chosen day), every month (same day of the month), every year (same date), every X days, or no schedule. A start time is set too. It can be changed later with /preset edit.
+- Every series with a schedule posts itself automatically, each occurrence as its own new post with the saved template and buttons. A weekly series posts the next one at 9AM on the Monday of the previous one's week, so people get a full week before sign-ups close. Monthly, yearly and every-X-days series post at 9AM the day after the previous one happens. The first one goes up within a minute of saving. /preset auto turns this off or on for a series. /preset list shows all series. /preset delete asks what to do: delete the series together with its forum and every post in it, archive it (the forum becomes read-only with every post closed, and nothing new is posted), or delete only the preset and leave the forum.
+- /preset list shows all series. /preset delete asks what to do: delete the series together with its forum and every post in it, archive it (the forum becomes read-only with every post closed, and nothing new is posted), or delete only the preset and leave the forum.
+
+MAKING THINGS HARD TO GET WRONG
+- Anything with a fixed set of answers is a dropdown: type of event, number of seats, lifts needed, usual day, dates and times.
+- Common answers are one-click buttons: Keep (the previous answer), No link, Nobody, No extra details, Use default cutoff. Typing still works.
+- Dates are picked from a list of upcoming days, with an option to type another.
+
+CREATING EVENTS AND SOCIALS
+- /event create asks the officer questions by private message. The first question decides whether it is an event (lifts organised) or a social (just track who is going).
+- Details collected: title, location, Facebook link (optional), date, start time, and the sign-up cutoff for events.
+- The sign-up cutoff defaults to 9AM on the Monday before the event. If that time has already passed, the officer must give a different cutoff. The cutoff can always be customised.
+- The officer confirms before anything is posted.
+- Events post in the event-organisation forum. Socials post in the socials-organisation forum.
+- /event edit changes details after posting (with confirmation) and tells everyone signed up.
+- /event cancel cancels an event or social (with confirmation), tells everyone, removes the buttons and locks the thread.
+- /event list shows all upcoming events and socials. Several can run at once, including on the same date.
+- /event closenow closes sign-ups early and sorts the cars straight away.
+- /help lists every command, grouped by who can use it, and explains the buttons.
+- /event refresh checks one event and repairs its posts if anything is out of date.
+
+SOCIALS
+- Two buttons: Going and Can't make it.
+- Officers can set up to five custom markers, such as time of arrival or dietary needs. People are asked for these when they press Going.
+- The post shows a live list of who is going, with their answers.
+- Everyone going gets a reminder 24 hours before.
+
+EVENT SIGN-UP
+- Buttons on the post: Driver, Passenger, Going no help, Edit my details, Pull out.
+- The post shows a live count of drivers, seats, passengers and people going.
+- Drivers are asked by private message: how many passengers they can take, anyone they will not take (kept private), anyone they have already organised to take, their pickup address, and a short acknowledgement about fuel, timings and kit.
+- Passengers are asked: whether they need a lift to the event, back, or both; what kit they are bringing; and a short acknowledgement that the driver has the final say.
+- Everyone confirms with a Yes or No button before it is saved.
+- Answers are remembered so next time people only change what has changed (reply keep to reuse an answer).
+- Optional area matching: people give a vague postcode or nearby landmark so people living near each other are grouped.
+- Going no help records someone as attending without needing any organising. If a driver is already taking them, the driver adds their name or ID to their sign-up so the seat is counted.
+- If someone signs up for two things on the same day in the same server, they get a warning naming the other event. It is only a warning and never blocks them.
+- Nobody can be a driver and a passenger at once. To change, pull out and sign up again.
+- Edit my details lets drivers and passengers change any of their answers at any time before the event.
+- Before the cutoff, edits just update the sign-up. After the cutoff, the cars are adjusted and everyone affected is told by private message: passengers if their driver has fewer seats, a new pickup address or they are reshuffled because another driver has organised them, and drivers if a passenger changes their kit or lifts needed.
+
+CARS AND ALLOCATION
+- Nobody is placed in a car until the cutoff.
+- People a driver has already organised are guaranteed a seat in that car, even if they have not signed up.
+- Drivers' "will not take" lists are always respected and never shown to anyone. Only direct database access can see them.
+- People needing lifts both ways are kept in the same car both ways wherever possible. They are only split when no single car can take them, and officers are told.
+- People needing only one direction can share a seat with someone needing the other.
+- With area matching on, cars are chosen by closeness of pickup area first, then free seats.
+- 24 hours before the cutoff the bot pings everyone and gives officers a preview of any splits or people without a lift.
+- At the cutoff the bot posts the cars in the thread (drivers, passengers, kit, pickup addresses, a waiting list) and sends each person a private message with their car.
+
+OFFICER TOOLS ON THE CARS POST
+- Move a person to another car or to the waiting list, for both trips or just one.
+- Swap two people.
+- Add a person, including someone who never signed up, choosing which trips they need.
+- Remove a person.
+- Warns if a car goes over its stated seats.
+- If a driver has asked not to take someone, the move is refused with only the message "This user cannot be moved into this car." The reason is never revealed.
+- Every change is logged in the thread and affected people are told by private message.
+
+CHANGES OF PLAN
+- Pull out is available at any time, with a confirmation. Nothing is announced publicly.
+- A driver pulling out: their passengers are moved into other cars with space, passengers are told by private message, and officers are pinged in their private channel with who moved, who has no space and who was split.
+- A passenger pulling out: once the cars are sorted, the driver carrying them is told by private message, and the officers channel is told without a ping.
+- A passenger who presses Going no help leaves the lift list but stays counted as going.
+- When a seat frees up, the waiting list fills automatically in order and people are told.
+- People signing up after the cutoff are placed in a car with space if there is one, otherwise put on the waiting list, and officers are pinged.
+
+NOTIFICATIONS
+- The officers channel has a pinned guide explaining how the bot works, what the alerts mean and every command. It posts itself when the channel is set up, updates itself when the bot is updated, and can be refreshed with /config guide.
+- A second private officers-only channel, the action log, is a quiet record of what has been done and by whom (events created, edited and cancelled, sign-ups, pull-outs, officer changes, series changes, reminders, settings changes). It never pings anyone.
+- A private officers-only channel receives the pings for pull-outs, splits, missing lifts and late sign-ups.
+- 24 hours before the event everyone who responded is pinged in the thread and sent a private message with their car details.
+
+PERSONAL TOOLS
+- /mylifts lists everything you are signed up for here and, once cars are sorted, which car you are in.
+- /mydetails shows the answers the bot has saved for you in this server. Only you can see it.
+- Every event post links to Google Calendar, and /event calendar in an event's thread gives you a calendar file.
+
+RELIABILITY AND PRIVACY
+- If something unexpected goes wrong in a command or button, the person gets a friendly message and the details go to the action log.
+- When an event has happened, a short summary (drivers, seats, passengers, going) is added to the action log.
+- If the bot restarts mid-conversation, it messages the person "Bot died... Not ideal, lets restart" and starts that conversation again.
+- Event data is deleted 14 days after the event. Remembered answers are deleted after a year of no updates.
+- /forgetme deletes a person's remembered answers and their records from past events.
+- A backup of the database is made every 6 hours and the newest 14 are kept. If the database file is ever missing at startup, the bot restores it from the newest backup that has data and says so in the action log.
+- All data is kept separately for each Discord server.
